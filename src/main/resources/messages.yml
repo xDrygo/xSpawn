@@ -1,0 +1,55 @@
+prefix: "#5771ff&lx&r&f&lSpawn &8»&r"
+command:
+  set:
+    first:
+      success: "%prefix% #a0ff72✔ First Spawn location set: %location%"
+    team:
+      success: "%prefix% #a0ff72✔ Team %team% spawn location set: %location%"
+    player:
+      success: "%prefix% #a0ff72✔ Player %target% spawn location set: %location%"
+      all: "%prefix% #a0ff72✔ Current online players spawn location set: %location%"
+  tp:
+    first:
+      success: "%prefix% #a0ff72✔ Teleported to First Spawn location."
+      using_world_spawn: "%prefix% #a0ff72✔ First Spawn location not defined, teleported to world spawn."
+    team:
+      success: "%prefix% #a0ff72✔ Teleported to team %team% spawn location."
+    player:
+      success: "%prefix% #a0ff72✔ Teleported to player %target% spawn location."
+  del:
+    first:
+      success: "%prefix% #ff7272❌ Deleted First Spawn location."
+    team:
+      success: "%prefix% #ff7272❌ Deleted team %team% spawn location."
+    player:
+      success: "%prefix% #ff7272❌ Deleted player %target% spawn location."
+      all: "%prefix% #ff7272❌ Deleted spawn location to all players."
+  reload:
+    success: "%prefix% #a0ff72✔ Plugin reloaded."
+    error: "%prefix% #FF0000🚫 Failed on plugin reload."
+  help:
+    - " "
+    - " "
+    - "                           #5771ff&lx&r&f&lSpawn &8» &r&fHelp"
+    - " "
+    - "#fff18d&l                    ᴘʟᴜɢɪɴ ᴄᴏᴍᴍᴀɴᴅꜱ"
+    - "&f  /xꜱᴘᴀᴡɴ ʜᴇʟᴘ #707070» #ccccccShows this help message"
+    - "&f  /xꜱᴘᴀᴡɴ ʀᴇʟᴏᴀᴅ #707070» #ccccccReloads the plugin configuration"
+    - " "
+    - "#fff18d&l                     ꜱᴘᴀᴡɴ ᴄᴏᴍᴍᴀɴᴅꜱ"
+    - "&f  /xꜱᴘᴀᴡɴ ꜱᴇᴛ <first/team/player> <team/player> #707070» #ccccccSet the first, per-team or per-player spawn on your current location."
+    - "&f  /xꜱᴘᴀᴡɴ ᴛᴘ <first/team/player> <team/player> #707070» #ccccccTeleports you to first, per-team or per-player set spawn."
+    - "&f  /xꜱᴘᴀᴡɴ ᴅᴇʟ <first/team/player> <team/player> #707070» #ccccccDeletes first, per-team or per-player set spawn."
+    - " "
+    - " "
+error:
+  no_permission: "%prefix% #FF0000🚫 No permission to use command %command%"
+  unknown_command: "%prefix% #FF0000🚫 Unknown command. &7Use &f/xspawn help &7to get command list."
+  only_player: "%prefix% #FF0000🚫 This command can't be used by console."
+  invalid_type: "%prefix% #FF0000🚫 Invalid Type. &7Types: &ffirst&7, &fteam&7, &fplayer"
+  xteams_not_loaded: "%prefix% #FF0000🚫 Can't use team type commands without xTeams."
+  team_not_specified: "%prefix% #FF0000🚫 Need to specify a team to use this command."
+  invalid_team: "%prefix% #FF0000🚫 Can't find team %team%."
+  team_not_defined: "%prefix% #FF0000🚫 Team %team% has no spawn defined."
+  player_not_specified: "%prefix% #FF0000🚫 Need to specify a player to use this command."
+  player_not_defined: "%prefix% #FF0000🚫 Player %target% has no spawn defined."
