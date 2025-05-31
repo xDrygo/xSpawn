@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 
 public class SpawnManager {
 
@@ -81,11 +82,14 @@ public class SpawnManager {
             return jsonToLoc(playerSpawns.getAsJsonObject(player.getName()));
         }
 
-        Team team = XTeamsAPI.getPlayerTeam(player.getName());
-        if (team != null) {
-            JsonObject teamSpawns = spawnsData.getAsJsonObject("team");
-            if (teamSpawns.has(team.getName())) {
-                return jsonToLoc(teamSpawns.getAsJsonObject(team.getName().toLowerCase()));
+        JsonObject teamSpawns = spawnsData.getAsJsonObject("team");
+        List<Team> teams = XTeamsAPI.getPlayerTeams(player.getName());
+        if (teams != null && !teams.isEmpty()) {
+            for (Team team : teams) {
+                String teamName = team.getName();
+                if (teamSpawns.has(teamName)) {
+                    return jsonToLoc(teamSpawns.getAsJsonObject(teamName));
+                }
             }
         }
 
