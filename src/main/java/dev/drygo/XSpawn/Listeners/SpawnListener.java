@@ -19,11 +19,10 @@ public class SpawnListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        if (!player.hasPlayedBefore()) {
-            Location spawn = spawnManager.getSpawnFor(player);
-            if (spawn != null) {
-                player.teleport(spawn);
-            }
+        Location spawn = spawnManager.getFirstSpawn();
+        if (player.hasPlayedBefore()) return;
+        if (spawn != null) {
+            player.teleport(spawn);
         }
     }
 

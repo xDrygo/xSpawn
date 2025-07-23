@@ -12,13 +12,13 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.eldrygo.XTeams.API.XTeamsAPI;
-import org.eldrygo.XTeams.Models.Team;
+import dev.drygo.XTeams.API.XTeamsAPI;
+import dev.drygo.XTeams.Models.Team;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class XSpawnCommand implements CommandExecutor {
+public class  XSpawnCommand implements CommandExecutor {
     private final ChatUtils chatUtils;
     private final LoadUtils loadUtils;
     private final SpawnManager spawnManager;
@@ -44,31 +44,22 @@ public class XSpawnCommand implements CommandExecutor {
         String sub = args[0].toLowerCase();
 
         switch (sub) {
-            case "set" -> {
-                handleSet(sender, args, label);
-            }
-            case "tp" -> {
-                handleTP(sender, args, label);
-            }
-            case "del" -> {
-                handleDel(sender, args, label);
-            }
-            case "reload" -> handleReload(sender, label);
+            case "set" -> handleSet(sender, args, label);
+            case "tp" -> handleTP(sender, args, label);
+            case "del" -> handleDel(sender, args, label);
+            case "reload" -> handleReload(sender, label, args);
             case "help" -> {
                 if (!sender.hasPermission("xspawn.command.help") && !sender.hasPermission("xspawn.admin") && !sender.isOp()) {
-                    sender.sendMessage(chatUtils.getMessage("error.no_permission", null));
+                    sender.sendMessage(chatUtils.getMessage("error.no_permission", null)
+                            .replace("%command%", label + " " + String.join(" ", args)));
                     return true;
                 }
                 List<String> helpMessage = configManager.getMessageConfig().getStringList("command.help");
                 for (String line : helpMessage) {
                     sender.sendMessage(ChatUtils.formatColor(line));
                 }
-                return true;
             }
-            default -> {
-                sender.sendMessage(chatUtils.getMessage("error.unknown_command", null));
-                return true;
-            }
+            default -> sender.sendMessage(chatUtils.getMessage("error.unknown_command", null));
         }
         return false;
     }
@@ -78,8 +69,9 @@ public class XSpawnCommand implements CommandExecutor {
             sender.sendMessage(chatUtils.getMessage("error.only_player", null));
             return;
         }
-        if (!(sender.hasPermission("xspawn.command.set") && sender.hasPermission("xspawn.admin") && sender.isOp())) {
-            sender.sendMessage(chatUtils.getMessage("error.no_permission", null).replace("%command%", label));
+        if (!sender.hasPermission("xspawn.command.set") && !sender.hasPermission("xspawn.admin") && !sender.isOp()) {
+            sender.sendMessage(chatUtils.getMessage("error.no_permission", null)
+                    .replace("%command%", label + (args.length > 0 ? " " + String.join(" ", args) : "")));
             return;
         }
         if (args.length < 2) {
@@ -147,8 +139,9 @@ public class XSpawnCommand implements CommandExecutor {
             sender.sendMessage(chatUtils.getMessage("error.only_player", null));
             return;
         }
-        if (!(sender.hasPermission("xspawn.command.tp") && sender.hasPermission("xspawn.admin") && sender.isOp())) {
-            sender.sendMessage(chatUtils.getMessage("error.no_permission", null).replace("%command%", label));
+        if (!sender.hasPermission("xspawn.command.tp") && !sender.hasPermission("xspawn.admin") && !sender.isOp()) {
+            sender.sendMessage(chatUtils.getMessage("error.no_permission", null)
+                    .replace("%command%", label + (args.length > 0 ? " " + String.join(" ", args) : "")));
             return;
         }
         if (args.length < 2) {
@@ -216,8 +209,9 @@ public class XSpawnCommand implements CommandExecutor {
     }
 
     private void handleDel(CommandSender sender, String[] args, String label) {
-        if (!(sender.hasPermission("xspawn.command.del") && sender.hasPermission("xspawn.admin") && sender.isOp())) {
-            sender.sendMessage(chatUtils.getMessage("error.no_permission", null).replace("%command%", label));
+        if (!sender.hasPermission("xspawn.command.del") && !sender.hasPermission("xspawn.admin") && !sender.isOp()) {
+            sender.sendMessage(chatUtils.getMessage("error.no_permission", null)
+                    .replace("%command%", label + (args.length > 0 ? " " + String.join(" ", args) : "")));
             return;
         }
         if (args.length < 2) {
@@ -288,9 +282,10 @@ public class XSpawnCommand implements CommandExecutor {
             default -> sender.sendMessage(chatUtils.getMessage("error.invalid_type", null));
         }
     }
-    private void handleReload(CommandSender sender, String label) {
-        if (!(sender.hasPermission("xspawn.command.reload") && sender.hasPermission("xspawn.admin") && sender.isOp())) {
-            sender.sendMessage(chatUtils.getMessage("error.no_permission", null).replace("%command%", label));
+    private void handleReload(CommandSender sender, String label, String[] args) {
+        if (!sender.hasPermission("xspawn.command.reload") && !sender.hasPermission("xspawn.admin") && !sender.isOp()) {
+            sender.sendMessage(chatUtils.getMessage("error.no_permission", null)
+                    .replace("%command%", label + (args.length > 0 ? " " + String.join(" ", args) : "")));
             return;
         }
 

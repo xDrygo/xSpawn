@@ -1,9 +1,9 @@
 package dev.drygo.XSpawn.API;
 
 import dev.drygo.XSpawn.Managers.SpawnManager;
+import dev.drygo.XTeams.Models.Team;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.eldrygo.XTeams.Models.Team;
 
 public class XSpawnAPI {
 

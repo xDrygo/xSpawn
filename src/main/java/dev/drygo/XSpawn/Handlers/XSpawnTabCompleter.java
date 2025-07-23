@@ -5,8 +5,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.eldrygo.XTeams.API.XTeamsAPI;
-import org.eldrygo.XTeams.Models.Team;
+import dev.drygo.XTeams.API.XTeamsAPI;
+import dev.drygo.XTeams.Models.Team;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -62,7 +62,7 @@ public class XSpawnTabCompleter implements TabCompleter {
                             break;
                         case "player":
                             List<String> players = Bukkit.getOnlinePlayers().stream()
-                                    .map(p -> p.getName().toLowerCase())
+                                    .map(p -> p.getName())
                                     .collect(Collectors.toList());
                             players.add("*");
                             return players.stream()

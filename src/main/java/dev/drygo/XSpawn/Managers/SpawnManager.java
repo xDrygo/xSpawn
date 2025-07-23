@@ -9,8 +9,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.eldrygo.XTeams.API.XTeamsAPI;
-import org.eldrygo.XTeams.Models.Team;
+import dev.drygo.XTeams.API.XTeamsAPI;
+import dev.drygo.XTeams.Models.Team;
 
 import java.io.File;
 import java.io.FileReader;
@@ -27,16 +27,26 @@ public class SpawnManager {
 
     public SpawnManager(XSpawn plugin) {
         this.plugin = plugin;
-        this.spawnFile = new File(plugin.getDataFolder(), "data/spawns.json");
-        if (!plugin.getDataFolder().exists()) {
-            plugin.getDataFolder().mkdirs();
+        File pluginFolder = plugin.getDataFolder();
+        if (!pluginFolder.exists()) {
+            pluginFolder.mkdirs();
         }
+        File dataFolder = new File(pluginFolder, "data");
+        if (!dataFolder.exists()) {
+            dataFolder.mkdirs();
+        }
+        this.spawnFile = new File(dataFolder, "spawns.json");
+    }
+
+    private JsonObject getWorldSpawnToJson() {
+        Location spawn = Bukkit.getWorlds().getFirst().getSpawnLocation();
+        return locToJson(spawn);
     }
 
     public void loadSpawns() {
         if (!spawnFile.exists()) {
             spawnsData = new JsonObject();
-            spawnsData.add("first", null);
+            spawnsData.add("first", getWorldSpawnToJson());
             spawnsData.add("team", new JsonObject());
             spawnsData.add("player", new JsonObject());
             saveSpawns();
@@ -66,11 +76,15 @@ public class SpawnManager {
 
     public void setPlayerSpawn(String playerName, Location loc) {
         JsonObject playerSpawns = spawnsData.getAsJsonObject("player");
-        playerSpawns.add(playerName, locToJson(loc));
+        playerSpawns.add(playerName.toLowerCase(), locToJson(loc));
         saveSpawns();
     }
 
     public void setTeamSpawn(Team team, Location loc) {
+        if (!plugin.isWorkingXTeams()) {
+            plugin.getLogger().warning("Failed on setTeamSpawn, xTeams not installed.");
+            return;
+        }
         JsonObject teamSpawns = spawnsData.getAsJsonObject("team");
         teamSpawns.add(team.getName(), locToJson(loc));
         saveSpawns();
@@ -78,21 +92,22 @@ public class SpawnManager {
 
     public Location getSpawnFor(Player player) {
         JsonObject playerSpawns = spawnsData.getAsJsonObject("player");
-        if (playerSpawns.has(player.getName())) {
-            return jsonToLoc(playerSpawns.getAsJsonObject(player.getName()));
+        if (playerSpawns.has(player.getName().toLowerCase())) {
+            return jsonToLoc(playerSpawns.getAsJsonObject(player.getName().toLowerCase()));
         }
 
         JsonObject teamSpawns = spawnsData.getAsJsonObject("team");
-        List<Team> teams = XTeamsAPI.getPlayerTeams(player.getName());
-        if (teams != null && !teams.isEmpty()) {
-            for (Team team : teams) {
-                String teamName = team.getName();
-                if (teamSpawns.has(teamName)) {
-                    return jsonToLoc(teamSpawns.getAsJsonObject(teamName));
+        if (plugin.isWorkingXTeams()) {
+            List<Team> teams = XTeamsAPI.getPlayerTeams(player.getName());
+            if (teams != null && !teams.isEmpty()) {
+                for (Team team : teams) {
+                    String teamName = team.getName();
+                    if (teamSpawns.has(teamName)) {
+                        return jsonToLoc(teamSpawns.getAsJsonObject(teamName));
+                    }
                 }
             }
         }
-
         if (spawnsData.has("first") && !spawnsData.get("first").isJsonNull()) {
             return jsonToLoc(spawnsData.getAsJsonObject("first"));
         }
@@ -107,6 +122,10 @@ public class SpawnManager {
     }
 
     public Location getTeamSpawn(Team team) {
+        if (!plugin.isWorkingXTeams()) {
+            plugin.getLogger().warning("Failed on setTeamSpawn, xTeams not installed.");
+            return null;
+        }
         JsonObject teams = spawnsData.getAsJsonObject("team");
         if (teams.has(team.getName())) {
             return jsonToLoc(teams.getAsJsonObject(team.getName()));
@@ -116,8 +135,8 @@ public class SpawnManager {
 
     public Location getPlayerSpawn(String playerName) {
         JsonObject players = spawnsData.getAsJsonObject("player");
-        if (players.has(playerName)) {
-            return jsonToLoc(players.getAsJsonObject(playerName));
+        if (players.has(playerName.toLowerCase())) {
+            return jsonToLoc(players.getAsJsonObject(playerName.toLowerCase()));
         }
         return null;
     }
@@ -128,12 +147,16 @@ public class SpawnManager {
     }
 
     public void removeTeamSpawn(Team team) {
+        if (!plugin.isWorkingXTeams()) {
+            plugin.getLogger().warning("Failed on setTeamSpawn, xTeams not installed.");
+            return;
+        }
         spawnsData.getAsJsonObject("team").remove(team.getName());
         saveSpawns();
     }
 
     public void removePlayerSpawn(String playerName) {
-        spawnsData.getAsJsonObject("player").remove(playerName);
+        spawnsData.getAsJsonObject("player").remove(playerName.toLowerCase());
         saveSpawns();
     }
 
