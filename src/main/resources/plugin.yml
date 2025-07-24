@@ -1,6 +1,6 @@
 name: xSpawn
 main: dev.drygo.XSpawn.XSpawn
-version: 0.0.06
+version: 0.0.07
 api-version: 1.20
 authors:
   - Drygo
