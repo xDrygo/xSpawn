@@ -30,7 +30,7 @@ public class XSpawnTabCompleter implements TabCompleter {
                                                 @NotNull String[] args) {
 
         if (args.length == 1) {
-            return Arrays.asList("set", "tp", "del", "reload", "help").stream()
+            return Arrays.asList("set", "tp", "del", "reload", "help", "info").stream()
                     .filter(s -> s.startsWith(args[0].toLowerCase()))
                     .collect(Collectors.toList());
         }

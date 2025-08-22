@@ -35,6 +35,7 @@ command:
     - "#fff18d&l                    ᴘʟᴜɢɪɴ ᴄᴏᴍᴍᴀɴᴅꜱ"
     - "&f  /xꜱᴘᴀᴡɴ ʜᴇʟᴘ #707070» #ccccccShows this help message"
     - "&f  /xꜱᴘᴀᴡɴ ʀᴇʟᴏᴀᴅ #707070» #ccccccReloads the plugin configuration"
+    - "&f  /xᴛᴇᴀᴍꜱ ɪɴꜰᴏ #707070- #ccccccDisplays information about the plugin."
     - " "
     - "#fff18d&l                     ꜱᴘᴀᴡɴ ᴄᴏᴍᴍᴀɴᴅꜱ"
     - "&f  /xꜱᴘᴀᴡɴ ꜱᴇᴛ <first/team/player> <team/player> #707070» #ccccccSet the first, per-team or per-player spawn on your current location."
